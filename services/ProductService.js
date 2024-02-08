@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-  // baseURL: 'https://challenge-api.sollenaturals.com',
   baseURL: 'https://api.sollenaturals.com/shop/products?countryId=185&retired=0',
   withCredentials: false,
   headers: {

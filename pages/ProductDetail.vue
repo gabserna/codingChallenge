@@ -1,26 +1,29 @@
 <template>
-    <section>
-  <h1>{{ products.name }}</h1>
-<p>Price: {{ products.price }}</p>
-<p>Description: {{ products.image }}</p>
-</section>
+  <section>
+    <h1>{{ product.name }}</h1>
+    <p>Price: {{ product.wholesale_price }}</p>
+    <p>Description: {{ product.image }}</p>
+  </section>
 </template>
 
 <script>
+import ProductService from "@/services/ProductService.js";
 
-  import ProductService from "@/services/ProductService.js";
-  export default {
-      name: "ProductDetail",
-      data() {
-          return {
-              products: {}
-          };
-      },
+export default {
+  name: "ProductDetailPage",
+  data() {
+    return {
+      product: {}
+    };
+  },
   async created() {
-  const productId = this.$route.params.productId;
-  this.products = await ProductService.getProduct(productId);
-}
-  };
+    const productId = this.$route.params.productId;
+    try {
+      this.product = await ProductService.getProduct(productId);
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    }
+  }
+};
 </script>
-
-<style></style> 
+<style></style>
