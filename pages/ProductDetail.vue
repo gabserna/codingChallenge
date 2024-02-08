@@ -2,7 +2,12 @@
   <section>
     <h1>{{ product.name }}</h1>
     <p>Price: {{ product.wholesale_price }}</p>
-    <p>Description: {{ product.image }}</p>
+    <v-img
+      :src="`https://solle.orbsix.com/${product.image}`"
+      width="50px"
+      height="auto"
+      class="rounded-t-xl object-cover"
+    ></v-img>
   </section>
 </template>
 
@@ -13,7 +18,7 @@ export default {
   name: "ProductDetailPage",
   data() {
     return {
-      product: {}
+      product: {},
     };
   },
   async created() {
@@ -23,7 +28,7 @@ export default {
     } catch (error) {
       console.error("Error fetching product details:", error);
     }
-  }
+  },
 };
 </script>
 <style></style>

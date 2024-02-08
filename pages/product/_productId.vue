@@ -11,15 +11,15 @@
         >
           <v-card @click="goToProductDetail">
             <v-card-title>{{ product.name }}</v-card-title>
-            <v-card-text>Price: ${{ product.wholesale_price }},  SKU: {{ product.sku }}</v-card-text>
-            <!-- <v-img src="https://solle.orbsix.com/{{ product.image }}"></v-img> -->
-            <v-img
+            <v-card-text>Price: ${{ product.wholesale_price }},  Description: {{ product.description }}</v-card-text>
+            
+            <!-- <v-img
               :src="`https://solle.orbsix.com/${product.image}`"
               width="50px"
               height="auto"
               class="rounded-t-xl object-cover"
-            ></v-img>
-            <!-- <v-divider></v-divider> -->
+            ></v-img> -->
+            
           </v-card>
         </v-card>
       </v-hover>
@@ -28,24 +28,17 @@
 </template>
 
 <script>
+import ProductService from "@/services/ProductService.js";
+
 export default {
-  props: {
-    product: Object,
-  },
-  methods: {
-    goToProductDetail() {
-      // this.$router.push({ name: "ProductDetail", params: { id: this.product.product_id } });
-      this.$router.push(`/product/${this.product.product_id}`);
-    },
-  },
+  async asyncData({ params }) {
+    try {
+      const product = await ProductService.getProduct(params.productId);
+      return { product };
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+      return { product: null };
+    }
+  }
 };
 </script>
-
-<style scoped>
-.on-hover {
-  box-shadow: 0 4px 8px #00000033;
-  transform: translateY(-4px);
-}
-</style>
-
-<style scoped></style>

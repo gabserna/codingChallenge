@@ -1,16 +1,17 @@
 <template>
-  <section class="pb-6 mb-6">
-    <h1>{{ title }}</h1>
-
-    <v-alert v-if="loading">Loading products.... </v-alert>
-    <div v-else>
-      <Product-card
-        v-for="product in products"
-        :key="product.product_id"
-        :product="product"
-      />
-    </div>
-  </section>
+  <v-col>
+    <section>
+      <h1 v-if="loading">Loading products...</h1>
+      <h1 v-if="!loading">{{ title }}</h1>
+      <v-alert v-if="error && !loading" type="error">{{ error }}</v-alert>
+      <div v-else>
+        <Product-card
+          v-for="product in products"
+          :key="product.id" :product="product"
+          class="mx-auto" />
+      </div>
+    </section>
+  </v-col>
 </template>
 
 <script>
@@ -26,28 +27,30 @@ export default {
       loading: true,
     };
   },
-  async mounted() {
+  async asyncData() {
     try {
       const products = await ProductService.getProducts();
-      this.products = products;
-      this.loading = false;
+      return { products };
+      // this.products = products;
+      // this.loading = false;
     } catch (error) {
       console.error("Error fetching products:", error);
     }
     // This will get called when the page begins to load
-    this.getProducts();
+    return { products: []}
+    // this.getProducts();
   },
-  methods: {
-    async getProducts() {
-      try {
-        const products = await ProductService.getProducts();
-        this.products = products;
-        // this.loading = false;
-      } catch (error) {
-        console.log("Error fetching prods:", error);
-      }
-    },
-  },
+  // methods: {
+  //   async getProducts() {
+  //     try {
+  //       const products = await ProductService.getProducts();
+  //       this.products = products;
+  //       // this.loading = false;
+  //     } catch (error) {
+  //       console.log("Error fetching prods:", error);
+  //     }
+  //   },
+  // },
   components: {
     ProductCard,
   },
